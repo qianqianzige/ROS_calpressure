@@ -3,14 +3,14 @@
 #include <sensor_msgs/FluidPressure.h>
 
 
-double H0,P0,P,T_base,T_drone;
+double H0=0,P0,P,T_base,T_drone;
 bool base_flag=false;
 //基站气压、温度
 void baseCallback(const sensor_msgs::FluidPressure::ConstPtr&  msg1) 
 { 
   // 打印出接收到的值
-  ROS_INFO("received pressure is: %f",msg1->fluid_pressure); 
-  ROS_INFO("received temperature is: %f",msg1->variance); 
+  ROS_INFO("base pressure is: %f",msg1->fluid_pressure); 
+  ROS_INFO("base temperature is: %f",msg1->variance); 
   P0=msg1->fluid_pressure;
   T_base=msg1->variance;
 }
@@ -19,7 +19,8 @@ void myCallback(const sensor_msgs::FluidPressure::ConstPtr& msg2)
 { 
   // 打印出接收到的值
   base_flag = true;
-  ROS_INFO("received value is: %f",msg2->fluid_pressure); 
+  ROS_INFO("drone pressure is: %f",msg2->fluid_pressure); 
+  ROS_INFO("drone temperature is: %f",msg2->fluid_pressure); 
   P=msg2->fluid_pressure;
   T_drone=msg2->variance;
 }

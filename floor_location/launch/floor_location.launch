@@ -1,0 +1,13 @@
+<launch>
+	<node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+	<param name="port" value="/dev/ttyUSB2"/>
+	<param name="baud" value="921600"/>
+	</node>
+    <node name="pressure_ref" pkg = "pressure_ref" type = "pressure_ref_node">
+    </node>
+    <rosparam file="$(find floor_location)/config/floor_location.yaml" command="load" />
+    <node name="calPressure" pkg = "pressure_node" type = "pressure_node_node" output = "screen">
+    </node>
+    <node name="floor_location" pkg = "floor_location" type = "floor_location" output = "screen">
+    </node>
+</launch>

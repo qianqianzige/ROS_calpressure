@@ -15,7 +15,7 @@ using namespace std;
 char buffer[100];
 int sockfd_1;
 struct sockaddr_in serv_addr_1;
-char   pressure_temp[2][12];
+char   pressure_temp[2][100];
 sensor_msgs::FluidPressure msg;
 ros::Publisher pub;
 void  pressureScanf(const char *buff)
@@ -33,7 +33,7 @@ void  pressureScanf(const char *buff)
 			iss >> msg.fluid_pressure;
             istringstream iss2(pressure_temp[1]);
 			iss2 >> msg.variance;
-            ROS_INFO_STREAM("pressure:"<<  msg.fluid_pressure<<"temp:" <<msg.variance);
+//            ROS_INFO_STREAM("pressure:"<<  msg.fluid_pressure<<"temp:" <<msg.variance);
             pub.publish(msg);
             break;
         }
@@ -55,15 +55,6 @@ void PressureRefParse(const char *buff, const short len)
     }
 }
 
-
-
-
-void pressureDecode(const char * buff)
-{
-   
-
-}
-
 int main(int argc, char **argv)
 {
 
@@ -82,7 +73,7 @@ int main(int argc, char **argv)
 	serv_addr_1.sin_port = htons(SERVPORT);
 	serv_addr_1.sin_addr.s_addr = inet_addr(SERVER_IP_1);
 	connect(sockfd_1, (struct sockaddr *) &serv_addr_1, sizeof(struct sockaddr));
-   	ros::Rate loop_rate(10);
+   	ros::Rate loop_rate(20);
     while(ros::ok())
     {
     	if ((rval = read(sockfd_1, buffer, 100)) < 0)
@@ -92,18 +83,16 @@ int main(int argc, char **argv)
 			loop_rate.sleep();
 			continue;
 		}
-		if (rval>0)
+		if (rval>2)
 		{
 			// decode 
-			ROS_INFO_STREAM(buffer);
+			//ROS_INFO_STREAM(buffer);
 			PressureRefParse(buffer,rval);
 		}
 
 		ros::spinOnce();
 		loop_rate.sleep();
     }
-
-	ros::spin();
 	close(sockfd_1);
 	return 0;
 }

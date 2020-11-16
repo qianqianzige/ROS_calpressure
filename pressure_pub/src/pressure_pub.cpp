@@ -29,18 +29,18 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
   ros::Subscriber sub;// = n.subscribe("/pressure", 100, pressureCallback);
   // socket init 
-	if ((sockfd_1 = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-		{
-			ROS_INFO("socket error!");
-			return -1;
-		}
-	bzero(&serv_addr_1, sizeof(serv_addr_1));
-	serv_addr_1.sin_family = AF_INET;
-	serv_addr_1.sin_port = htons(SERVPORT);
-	serv_addr_1.sin_addr.s_addr = inet_addr(SERVER_IP_1);
-	connect(sockfd_1, (struct sockaddr *) &serv_addr_1, sizeof(struct sockaddr));
-	sub = n.subscribe("/pressure", 100, pressureCallback);
-	ros::spin();
-	close(sockfd_1);
-	return 0;
+    if ((sockfd_1 = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+        {
+            ROS_INFO("socket error!");
+            return -1;
+        }
+    bzero(&serv_addr_1, sizeof(serv_addr_1));
+    serv_addr_1.sin_family = AF_INET;
+    serv_addr_1.sin_port = htons(SERVPORT);
+    serv_addr_1.sin_addr.s_addr = inet_addr(SERVER_IP_1);
+    connect(sockfd_1, (struct sockaddr *) &serv_addr_1, sizeof(struct sockaddr));
+    sub = n.subscribe("/pressure", 100, pressureCallback);
+    ros::spin();
+    close(sockfd_1);
+    return 0;
 }
